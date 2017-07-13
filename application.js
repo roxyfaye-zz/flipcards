@@ -14,7 +14,9 @@ const user = [{
     password: 'qwer1234'
 }];
 const storage = {
-    session: []
+    session: [],
+   users:[{name: 'melloDee',
+    password: 'qwer1234'}] 
 };
 
 
@@ -30,7 +32,7 @@ application.post('/api/registration', function (request, response) {
         name: request.body.name,
         password: request.body.password
     }
-
+    //hash the password
     // storage.users.push(name);
 
     response.json(request.body);
@@ -45,33 +47,34 @@ application.post('/api/login', function (request, response) {
 
     var name = request.body.name;
     var password = request.body.password;
-    // var user = storage.users.find(user => {
-    //     return user.name === name && user.password === password
-    // })
+    var user = storage.users.find(user => {
+        return user.name === name && user.password === password
+    })
 
     if (!user) {
-        response.rend('login');
+        response.json({status:'thou shall not pass'});
     } else {
-        var sessionId = storage.sessionId;
-        storage.sessionId++;
+        // var sessionId = storage.sessionId;
+        //storage.sessionId++;
         //storage.sessions.push(user);
-        response.cookie('session', sessionId);
+        // response.cookie('session', sessionId);
         //response.render('/', user);
-
+        response.json({status: 'success'});
 
     }
-    response.json(user);
+
 });
 
 
 
 
-// application.get('/api/logout', function (request,response) {
+application.get('/api/logout', function (request,response) {
+   var currentUser = Parse.User.logout();
+       res.redirect('/api',{status:'later!' });
 
 
-//    response.json();
-// });
-
+});
+   
 // application.post('/api/users/cards', function (request,response) {
 
 
